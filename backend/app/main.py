@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from .models import Transaction, LedgerEvent
 from .database import engine
 from .models import Base
 
@@ -18,6 +18,18 @@ app = FastAPI()
 def root():
     return {"message": "PayShield Running"}
 
+@app.get("/transactions")
+def get_transactions(
+    db: Session = Depends(get_db)
+):
+    return db.query(Transaction).all()
+
+@app.get("/ledger")
+def get_ledger(
+    db: Session = Depends(get_db)
+):
+    return db.query(LedgerEvent).all()
+
 @app.post("/payment")
 def make_payment(
     payment: PaymentRequest,
@@ -33,6 +45,25 @@ def make_payment(
     db.add(txn)
     db.commit()
     db.refresh(txn)
+
+    debit_event = LedgerEvent(
+        transaction_id=txn.id,
+        user_id=payment.sender_id,
+        event_type="DEBIT",
+        amount=payment.amount
+    )
+
+    credit_event = LedgerEvent(
+        transaction_id=txn.id,
+        user_id=payment.receiver_id,
+        event_type="CREDIT",
+        amount=payment.amount
+    )
+
+    db.add(debit_event)
+    db.add(credit_event)
+
+    db.commit()
 
     return {
         "transaction_id": txn.id,
