@@ -7,6 +7,8 @@ import {
 import Home from "./pages/Home";
 import Payment from "./pages/Payment";
 import Transactions from "./pages/Transactions";
+import Ledger from "./pages/Ledger";
+import Users from "./pages/Users";
 
 function App() {
   return (
@@ -24,6 +26,16 @@ function App() {
         <Route
           path="/transactions"
           element={<Transactions />}
+        />
+
+        <Route
+          path="/ledger"
+          element={<Ledger />}
+        />
+
+        <Route
+          path="/users"
+          element={<Users />}
         />
 
       </Routes>
