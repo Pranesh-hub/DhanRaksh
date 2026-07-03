@@ -13,6 +13,19 @@ export default function Transactions() {
 
   }, []);
 
+  const riskColor = (level) => {
+    if (level === "CRITICAL")
+      return "red";
+
+    if (level === "HIGH")
+      return "orange";
+
+    if (level === "MEDIUM")
+      return "gold";
+
+    return "green";
+  };
+
   return (
     <div>
 
@@ -20,17 +33,26 @@ export default function Transactions() {
 
       {transactions.map((txn) => (
 
-        <div key={txn.id}>
+        <div
+          key={txn.id}
+          style={{
+            border: "1px solid black",
+            padding: "10px",
+            margin: "10px"
+          }}
+        >
 
-          #{txn.id}
+          <p>Transaction #{txn.id}</p>
 
-          {" | "}
+          <p>Amount: ₹{txn.amount}</p>
 
-          ₹{txn.amount}
+          <p>Status: {txn.status}</p>
 
-          {" | "}
+          <p>Fraud Score: {txn.fraud_score}</p>
 
-          {txn.status}
+          <p style={{color: riskColor(txn.risk_level)}}>Risk Level: {txn.risk_level}</p>
+
+          <p>Reasons: {txn.fraud_reasons}</p>
 
         </div>
 

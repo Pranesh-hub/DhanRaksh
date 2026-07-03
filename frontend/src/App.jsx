@@ -9,6 +9,7 @@ import Payment from "./pages/Payment";
 import Transactions from "./pages/Transactions";
 import Ledger from "./pages/Ledger";
 import Users from "./pages/Users";
+import FraudDashboard from "./pages/FraudDashboard";
 
 function App() {
   return (
@@ -36,6 +37,11 @@ function App() {
         <Route
           path="/users"
           element={<Users />}
+        />
+
+        <Route
+          path="/fraud-dashboard"
+          element={<FraudDashboard />}
         />
 
       </Routes>
